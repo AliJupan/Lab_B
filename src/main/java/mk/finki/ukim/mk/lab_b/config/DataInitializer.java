@@ -36,8 +36,8 @@ public class DataInitializer {
         Host pierreDupont = hostRepository.save(new Host( "Pierre", "Dupont", france));
 
         // Initialize Accommodations
-        accommodationRepository.save(new Accommodation("Hotel USA", Category.HOTEL, johnDoe, 50));
-        accommodationRepository.save(new Accommodation("Apartment UK", Category.APARTMENT, janeSmith, 3));
-        accommodationRepository.save(new Accommodation("Hostel Paris", Category.MOTEL, pierreDupont, 20));
+        accommodationRepository.save(new Accommodation("Hotel USA", Category.HOTEL, johnDoe, 50,true));
+        accommodationRepository.save(new Accommodation("Apartment UK", Category.APARTMENT, janeSmith, 3,false));
+        accommodationRepository.save(new Accommodation("Hostel Paris", Category.MOTEL, pierreDupont, 20,true));
     }
 }

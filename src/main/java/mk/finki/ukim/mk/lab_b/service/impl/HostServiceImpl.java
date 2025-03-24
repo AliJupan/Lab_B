@@ -1,6 +1,5 @@
 package mk.finki.ukim.mk.lab_b.service.impl;
 
-import mk.finki.ukim.mk.lab_b.model.Country;
 import mk.finki.ukim.mk.lab_b.model.Host;
 import mk.finki.ukim.mk.lab_b.repository.HostRepository;
 import mk.finki.ukim.mk.lab_b.service.CountryService;

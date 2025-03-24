@@ -1,7 +1,6 @@
 package mk.finki.ukim.mk.lab_b.service.impl;
 
 import mk.finki.ukim.mk.lab_b.model.Accommodation;
-import mk.finki.ukim.mk.lab_b.model.Category;
 import mk.finki.ukim.mk.lab_b.repository.AccommodationRepository;
 import mk.finki.ukim.mk.lab_b.service.AccommodationService;
 import mk.finki.ukim.mk.lab_b.service.HostService;
@@ -55,5 +54,12 @@ public class AccommodationServiceImpl implements AccommodationService {
         accommodationRepository.save(accommodation);
 
         return accommodation;
+    }
+
+    @Override
+    public Accommodation setActive(int id) {
+        Accommodation existingAccommodation = this.findById(id);
+        existingAccommodation.setActive(!existingAccommodation.isActive());
+        return accommodationRepository.save(existingAccommodation);
     }
 }
