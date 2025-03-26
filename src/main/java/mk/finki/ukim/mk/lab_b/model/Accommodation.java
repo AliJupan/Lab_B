@@ -1,6 +1,8 @@
 package mk.finki.ukim.mk.lab_b.model;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @Entity
@@ -12,7 +14,8 @@ public class Accommodation {
     private String name;
     @Enumerated(EnumType.STRING)
     private Category category;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Host host;
     private int numRooms;
     private boolean active;

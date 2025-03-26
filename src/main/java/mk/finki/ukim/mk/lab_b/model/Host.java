@@ -2,6 +2,8 @@ package mk.finki.ukim.mk.lab_b.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @Entity
@@ -11,7 +13,8 @@ public class Host {
     private Long id;
     private String name;
     private String surname;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Country country;
 
     public Host(String name, String surname, Country country) {
