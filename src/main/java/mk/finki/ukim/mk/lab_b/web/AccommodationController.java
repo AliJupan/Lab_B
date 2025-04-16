@@ -1,7 +1,9 @@
 package mk.finki.ukim.mk.lab_b.web;
 
-import mk.finki.ukim.mk.lab_b.model.Accommodation;
-import mk.finki.ukim.mk.lab_b.service.AccommodationService;
+import io.swagger.v3.oas.annotations.Operation;
+import mk.finki.ukim.mk.lab_b.dto.CreateAccommodationDto;
+import mk.finki.ukim.mk.lab_b.dto.DisplayAccommodationDto;
+import mk.finki.ukim.mk.lab_b.service.application.AccommodationApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,49 +13,57 @@ import java.util.List;
 @RequestMapping("/api/accommodations")
 public class AccommodationController {
 
-    private final AccommodationService accommodationService;
+    private final AccommodationApplicationService accommodationService;
 
-    public AccommodationController(AccommodationService accommodationService) {
+    public AccommodationController(AccommodationApplicationService accommodationService) {
         this.accommodationService = accommodationService;
     }
 
+    @Operation(summary = "Get all accommodations", description = "Returns a list of all accommodations.")
     @GetMapping
-    public List<Accommodation> findAll() {
+    public List<DisplayAccommodationDto> findAll() {
         return accommodationService.findAll();
     }
 
+    @Operation(summary = "Get accommodation by ID", description = "Returns a specific accommodation by its ID.")
     @GetMapping("/{id}")
-    public ResponseEntity<Accommodation> findById(@PathVariable int id) {
-        Accommodation accommodation = accommodationService.findById(id);
-        return accommodation != null ? ResponseEntity.ok().body(accommodation) : ResponseEntity.notFound().build();
+    public ResponseEntity<DisplayAccommodationDto> findById(@PathVariable Long id) {
+        return accommodationService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Add a new accommodation", description = "Creates and returns a new accommodation based on the provided data.")
     @PostMapping("/add")
-    public ResponseEntity<Accommodation> save(@RequestBody Accommodation accommodation) {
-        Accommodation savedAccommodation = accommodationService.save(accommodation);
-        return savedAccommodation != null ? ResponseEntity.ok().body(savedAccommodation) : ResponseEntity.badRequest().build();
+    public ResponseEntity<DisplayAccommodationDto> save(@RequestBody CreateAccommodationDto createAccommodationDto) {
+        return accommodationService.save(createAccommodationDto)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Update accommodation", description = "Updates an existing accommodation with the given ID.")
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Accommodation> update(@PathVariable int id, @RequestBody Accommodation accommodation) {
-        Accommodation updatedAccommodation = accommodationService.update(id, accommodation);
-        return updatedAccommodation != null ? ResponseEntity.ok().body(updatedAccommodation) : ResponseEntity.notFound().build();
+    public ResponseEntity<DisplayAccommodationDto> update(@PathVariable Long id, @RequestBody CreateAccommodationDto createAccommodationDto) {
+        return accommodationService.update(id, createAccommodationDto)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Delete accommodation by ID", description = "Deletes the accommodation with the specified ID.")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable int id) {
-        Accommodation accommodation = accommodationService.findById(id);
-        if (accommodation != null) {
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        if (accommodationService.findById(id).isPresent()) {
             accommodationService.deleteById(id);
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.notFound().build();
     }
 
+    @Operation(summary = "Activate accommodation", description = "Marks an accommodation as active by its ID.")
     @PutMapping("/active/{id}")
-    public ResponseEntity<Accommodation> active(@PathVariable int id) {
-        Accommodation updatedAccommodation = accommodationService.setActive(id);
-        return updatedAccommodation != null ? ResponseEntity.ok().body(updatedAccommodation) : ResponseEntity.notFound().build();
+    public ResponseEntity<DisplayAccommodationDto> active(@PathVariable Long id) {
+        return accommodationService.setActive(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

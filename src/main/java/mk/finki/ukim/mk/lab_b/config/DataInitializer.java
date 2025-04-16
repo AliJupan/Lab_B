@@ -1,13 +1,17 @@
 package mk.finki.ukim.mk.lab_b.config;
 
 import jakarta.annotation.PostConstruct;
-import mk.finki.ukim.mk.lab_b.model.Accommodation;
-import mk.finki.ukim.mk.lab_b.model.Category;
-import mk.finki.ukim.mk.lab_b.model.Country;
-import mk.finki.ukim.mk.lab_b.model.Host;
+import mk.finki.ukim.mk.lab_b.model.domain.Accommodation;
+import mk.finki.ukim.mk.lab_b.model.domain.User;
+import mk.finki.ukim.mk.lab_b.model.enumerations.Role;
+import mk.finki.ukim.mk.lab_b.model.enumerations.Category;
+import mk.finki.ukim.mk.lab_b.model.domain.Country;
+import mk.finki.ukim.mk.lab_b.model.domain.Host;
 import mk.finki.ukim.mk.lab_b.repository.AccommodationRepository;
 import mk.finki.ukim.mk.lab_b.repository.CountryRepository;
 import mk.finki.ukim.mk.lab_b.repository.HostRepository;
+import mk.finki.ukim.mk.lab_b.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,11 +20,16 @@ public class DataInitializer {
     private final CountryRepository countryRepository;
     private final HostRepository hostRepository;
     private final AccommodationRepository accommodationRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public DataInitializer(CountryRepository countryRepository, HostRepository hostRepository, AccommodationRepository accommodationRepository) {
+
+    public DataInitializer(CountryRepository countryRepository, HostRepository hostRepository, AccommodationRepository accommodationRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.countryRepository = countryRepository;
         this.hostRepository = hostRepository;
         this.accommodationRepository = accommodationRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
@@ -39,5 +48,21 @@ public class DataInitializer {
         accommodationRepository.save(new Accommodation("Hotel USA", Category.HOTEL, johnDoe, 50,true));
         accommodationRepository.save(new Accommodation("Apartment UK", Category.APARTMENT, janeSmith, 3,false));
         accommodationRepository.save(new Accommodation("Hostel Paris", Category.MOTEL, pierreDupont, 20,true));
+
+        userRepository.save(new User(
+                "admin",
+                passwordEncoder.encode("admin"),
+                "test",
+                "test",
+                Role.ROLE_HOST
+        ));
+
+        userRepository.save(new User(
+                "user",
+                passwordEncoder.encode("user"),
+                "user",
+                "user",
+                Role.ROLE_USER
+        ));
     }
 }

@@ -1,6 +1,6 @@
 package mk.finki.ukim.mk.lab_b.repository;
 
-import mk.finki.ukim.mk.lab_b.model.Host;
+import mk.finki.ukim.mk.lab_b.model.domain.Host;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

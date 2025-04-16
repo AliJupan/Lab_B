@@ -1,4 +1,4 @@
-package mk.finki.ukim.mk.lab_b.model;
+package mk.finki.ukim.mk.lab_b.model.enumerations;
 
 public enum Category {
     ROOM,
