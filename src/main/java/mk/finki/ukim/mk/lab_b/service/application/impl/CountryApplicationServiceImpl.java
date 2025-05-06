@@ -1,7 +1,8 @@
 package mk.finki.ukim.mk.lab_b.service.application.impl;
 
-import mk.finki.ukim.mk.lab_b.dto.CreateCountryDto;
-import mk.finki.ukim.mk.lab_b.dto.DisplayCountryDto;
+import mk.finki.ukim.mk.lab_b.dto.create.CreateCountryDto;
+import mk.finki.ukim.mk.lab_b.dto.display.DisplayCountryDto;
+import mk.finki.ukim.mk.lab_b.repository.HostsPerCountryViewRepository;
 import mk.finki.ukim.mk.lab_b.service.application.CountryApplicationService;
 import mk.finki.ukim.mk.lab_b.service.domain.CountryService;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,11 @@ import java.util.Optional;
 public class CountryApplicationServiceImpl implements CountryApplicationService {
 
     CountryService countryService;
+    HostsPerCountryViewRepository hostsPerCountryViewRepository;
 
-    public CountryApplicationServiceImpl(CountryService countryService) {
+    public CountryApplicationServiceImpl(CountryService countryService, HostsPerCountryViewRepository hostsPerCountryViewRepository) {
         this.countryService = countryService;
+        this.hostsPerCountryViewRepository = hostsPerCountryViewRepository;
     }
 
     @Override
@@ -41,5 +44,10 @@ public class CountryApplicationServiceImpl implements CountryApplicationService 
     @Override
     public void delete(Long id) {
         countryService.delete(id);
+    }
+
+    @Override
+    public void refreshMaterializedView() {
+        this.hostsPerCountryViewRepository.refreshMaterializedViews();
     }
 }

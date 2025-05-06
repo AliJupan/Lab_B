@@ -1,7 +1,9 @@
 package mk.finki.ukim.mk.lab_b.service.application.impl;
 
-import mk.finki.ukim.mk.lab_b.dto.CreateAccommodationDto;
-import mk.finki.ukim.mk.lab_b.dto.DisplayAccommodationDto;
+import mk.finki.ukim.mk.lab_b.dto.create.CreateAccommodationDto;
+import mk.finki.ukim.mk.lab_b.dto.display.DisplayAccommodationDto;
+import mk.finki.ukim.mk.lab_b.model.views.AccommodationsPerHostView;
+import mk.finki.ukim.mk.lab_b.repository.AccommodationsPerHostViewRepository;
 import mk.finki.ukim.mk.lab_b.service.application.AccommodationApplicationService;
 import mk.finki.ukim.mk.lab_b.service.domain.AccommodationService;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,11 @@ import java.util.Optional;
 public class AccommodationApplicationServiceImpl implements AccommodationApplicationService {
 
     AccommodationService accommodationService;
+    AccommodationsPerHostViewRepository accommodationsPerHostViewRepository;
 
-    public AccommodationApplicationServiceImpl(AccommodationService accommodationService) {
+    public AccommodationApplicationServiceImpl(AccommodationService accommodationService, AccommodationsPerHostViewRepository accommodationsPerHostViewRepository) {
         this.accommodationService = accommodationService;
+        this.accommodationsPerHostViewRepository = accommodationsPerHostViewRepository;
     }
 
     @Override
@@ -46,5 +50,18 @@ public class AccommodationApplicationServiceImpl implements AccommodationApplica
     @Override
     public Optional<DisplayAccommodationDto> setActive(Long id) {
         return accommodationService.setActive(id).map(DisplayAccommodationDto::from);
+    }
+
+
+    //views
+
+    @Override
+    public List<AccommodationsPerHostView> getAccommodationsPerHost() {
+        return this.accommodationsPerHostViewRepository.findAll();
+    }
+
+    @Override
+    public void refreshMaterializedView() {
+        accommodationsPerHostViewRepository.refreshMaterializedViews();
     }
 }

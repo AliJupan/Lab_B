@@ -1,9 +1,17 @@
 package mk.finki.ukim.mk.lab_b.service.application.impl;
 
-import mk.finki.ukim.mk.lab_b.dto.CreateHostDto;
-import mk.finki.ukim.mk.lab_b.dto.DisplayHostDto;
+import mk.finki.ukim.mk.lab_b.dto.create.CreateHostDto;
+import mk.finki.ukim.mk.lab_b.dto.display.DisplayHostDto;
+import mk.finki.ukim.mk.lab_b.events.HostChangedEvent;
+import mk.finki.ukim.mk.lab_b.events.HostCreatedEvent;
+import mk.finki.ukim.mk.lab_b.events.HostDeletedEvent;
+import mk.finki.ukim.mk.lab_b.model.projections.HostNameProjection;
+import mk.finki.ukim.mk.lab_b.model.views.HostsPerCountryView;
+import mk.finki.ukim.mk.lab_b.repository.HostsPerCountryViewRepository;
 import mk.finki.ukim.mk.lab_b.service.application.HostApplicationService;
 import mk.finki.ukim.mk.lab_b.service.domain.HostService;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +21,13 @@ import java.util.Optional;
 public class HostApplicationServiceImpl implements HostApplicationService {
 
     HostService hostService;
+    HostsPerCountryViewRepository hostsPerCountryViewRepository;
+    ApplicationEventPublisher applicationEvent;
 
-    public HostApplicationServiceImpl(HostService hostService) {
+    public HostApplicationServiceImpl(HostService hostService, HostsPerCountryViewRepository hostsPerCountryViewRepository, ApplicationEventPublisher applicationEvent) {
         this.hostService = hostService;
+        this.hostsPerCountryViewRepository = hostsPerCountryViewRepository;
+        this.applicationEvent = applicationEvent;
     }
 
     @Override
@@ -30,16 +42,43 @@ public class HostApplicationServiceImpl implements HostApplicationService {
 
     @Override
     public Optional<DisplayHostDto> save(CreateHostDto createHostDto) {
-        return hostService.save(createHostDto.toHost()).map(DisplayHostDto::from);
+        return hostService.save(createHostDto.toHost())
+                .map(host -> {
+                    applicationEvent.publishEvent(new HostCreatedEvent(host));
+                    return DisplayHostDto.from(host);
+                });
     }
 
     @Override
     public void delete(Long id) {
+        hostService.findById(id).ifPresent(host ->
+                applicationEvent.publishEvent(new HostDeletedEvent(host))
+        );
         hostService.delete(id);
     }
 
     @Override
     public Optional<DisplayHostDto> update(Long id, CreateHostDto createHostDto) {
-        return hostService.update(id, createHostDto.toHost()).map(DisplayHostDto::from);
+        return hostService.update(id, createHostDto.toHost())
+                .map(host -> {
+                    applicationEvent.publishEvent(new HostChangedEvent(host));
+                    return DisplayHostDto.from(host);
+                });
+    }
+
+    @Override
+    public List<HostNameProjection> findHostNames() {
+        return hostService.findHostNames();
+    }
+
+
+    @Override
+    public List<HostsPerCountryView> getHostPerCountry() {
+        return this.hostsPerCountryViewRepository.findAll();
+    }
+
+    @Override
+    public void refreshMaterializedView() {
+        this.hostsPerCountryViewRepository.refreshMaterializedViews();
     }
 }

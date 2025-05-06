@@ -2,6 +2,8 @@ package mk.finki.ukim.mk.lab_b.model.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ public class Booking {
     private LocalDateTime createdAt;
 
     @ManyToOne
+    @JoinColumn(name = "user_username", referencedColumnName = "username", nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private User user;
 
     @ManyToMany

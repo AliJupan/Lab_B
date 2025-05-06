@@ -1,6 +1,7 @@
 package mk.finki.ukim.mk.lab_b.service.domain.impl;
 
 import mk.finki.ukim.mk.lab_b.model.domain.Host;
+import mk.finki.ukim.mk.lab_b.model.projections.HostNameProjection;
 import mk.finki.ukim.mk.lab_b.repository.HostRepository;
 import mk.finki.ukim.mk.lab_b.service.domain.CountryService;
 import mk.finki.ukim.mk.lab_b.service.domain.HostService;
@@ -54,5 +55,10 @@ public class HostServiceImpl implements HostService {
             }
             return hostRepository.save(existingHost);
         });
+    }
+
+    @Override
+    public List<HostNameProjection> findHostNames() {
+        return hostRepository.findAllBy();
     }
 }

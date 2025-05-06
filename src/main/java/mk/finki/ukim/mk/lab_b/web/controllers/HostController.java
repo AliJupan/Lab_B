@@ -1,9 +1,11 @@
-package mk.finki.ukim.mk.lab_b.web;
+package mk.finki.ukim.mk.lab_b.web.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
-import mk.finki.ukim.mk.lab_b.dto.CreateHostDto;
-import mk.finki.ukim.mk.lab_b.dto.DisplayHostDto;
+import mk.finki.ukim.mk.lab_b.dto.create.CreateHostDto;
+import mk.finki.ukim.mk.lab_b.dto.display.DisplayHostDto;
+import mk.finki.ukim.mk.lab_b.model.projections.HostNameProjection;
 import mk.finki.ukim.mk.lab_b.service.application.impl.HostApplicationServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,5 +59,18 @@ public class HostController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/names")
+    public List<HostNameProjection> getHostNames() {
+        return hostService.findHostNames();
+    }
+
+    // views
+
+    @GetMapping("/by-country")
+    @Operation(summary = "")
+    public ResponseEntity<?> getHostPerCountry() {
+        return ResponseEntity.status(HttpStatus.OK).body(hostService.getHostPerCountry());
     }
 }

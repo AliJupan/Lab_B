@@ -1,10 +1,10 @@
-package mk.finki.ukim.mk.lab_b.web;
+package mk.finki.ukim.mk.lab_b.web.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import mk.finki.ukim.mk.lab_b.dto.BookingDto;
+import mk.finki.ukim.mk.lab_b.dto.display.BookingDto;
 import mk.finki.ukim.mk.lab_b.model.domain.User;
 import mk.finki.ukim.mk.lab_b.service.application.BookingApplicationService;
 import org.springframework.http.ResponseEntity;

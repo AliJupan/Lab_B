@@ -1,9 +1,10 @@
-package mk.finki.ukim.mk.lab_b.web;
+package mk.finki.ukim.mk.lab_b.web.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
-import mk.finki.ukim.mk.lab_b.dto.CreateAccommodationDto;
-import mk.finki.ukim.mk.lab_b.dto.DisplayAccommodationDto;
+import mk.finki.ukim.mk.lab_b.dto.create.CreateAccommodationDto;
+import mk.finki.ukim.mk.lab_b.dto.display.DisplayAccommodationDto;
 import mk.finki.ukim.mk.lab_b.service.application.AccommodationApplicationService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,5 +66,13 @@ public class AccommodationController {
         return accommodationService.setActive(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // views
+
+    @GetMapping("/by-host")
+    @Operation(summary = "")
+    public ResponseEntity<?> getAccommodationsPerHost() {
+        return ResponseEntity.status(HttpStatus.OK).body(accommodationService.getAccommodationsPerHost());
     }
 }

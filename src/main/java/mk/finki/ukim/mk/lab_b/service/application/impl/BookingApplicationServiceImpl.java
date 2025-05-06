@@ -1,7 +1,7 @@
 package mk.finki.ukim.mk.lab_b.service.application.impl;
 
-import mk.finki.ukim.mk.lab_b.dto.BookingDto;
-import mk.finki.ukim.mk.lab_b.dto.DisplayAccommodationDto;
+import mk.finki.ukim.mk.lab_b.dto.display.BookingDto;
+import mk.finki.ukim.mk.lab_b.dto.display.DisplayAccommodationDto;
 import mk.finki.ukim.mk.lab_b.service.application.BookingApplicationService;
 import mk.finki.ukim.mk.lab_b.service.domain.BookingService;
 import org.springframework.stereotype.Service;

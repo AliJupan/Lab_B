@@ -1,4 +1,4 @@
-package mk.finki.ukim.mk.lab_b.dto;
+package mk.finki.ukim.mk.lab_b.dto.create;
 
 import mk.finki.ukim.mk.lab_b.model.domain.User;
 import mk.finki.ukim.mk.lab_b.model.enumerations.Role;

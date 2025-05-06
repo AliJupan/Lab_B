@@ -1,7 +1,7 @@
 package mk.finki.ukim.mk.lab_b.service.application;
 
-import mk.finki.ukim.mk.lab_b.dto.BookingDto;
-import mk.finki.ukim.mk.lab_b.dto.DisplayAccommodationDto;
+import mk.finki.ukim.mk.lab_b.dto.display.BookingDto;
+import mk.finki.ukim.mk.lab_b.dto.display.DisplayAccommodationDto;
 
 import java.util.List;
 import java.util.Optional;

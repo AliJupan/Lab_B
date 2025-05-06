@@ -1,8 +1,8 @@
-package mk.finki.ukim.mk.lab_b.web;
+package mk.finki.ukim.mk.lab_b.web.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
-import mk.finki.ukim.mk.lab_b.dto.CreateCountryDto;
-import mk.finki.ukim.mk.lab_b.dto.DisplayCountryDto;
+import mk.finki.ukim.mk.lab_b.dto.create.CreateCountryDto;
+import mk.finki.ukim.mk.lab_b.dto.display.DisplayCountryDto;
 import mk.finki.ukim.mk.lab_b.service.application.CountryApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

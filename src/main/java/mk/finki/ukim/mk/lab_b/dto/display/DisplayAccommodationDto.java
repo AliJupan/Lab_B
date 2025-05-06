@@ -1,7 +1,6 @@
-package mk.finki.ukim.mk.lab_b.dto;
+package mk.finki.ukim.mk.lab_b.dto.display;
 
 import mk.finki.ukim.mk.lab_b.model.domain.Accommodation;
-import mk.finki.ukim.mk.lab_b.model.domain.Host;
 import mk.finki.ukim.mk.lab_b.model.enumerations.Category;
 
 import java.util.List;
