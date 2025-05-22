@@ -15,8 +15,7 @@ public class Accommodation {
     private String name;
     @Enumerated(EnumType.STRING)
     private Category category;
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne
     private Host host;
     private int numRooms;
     private boolean active;

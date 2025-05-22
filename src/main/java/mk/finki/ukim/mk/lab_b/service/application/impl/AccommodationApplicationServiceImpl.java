@@ -2,10 +2,12 @@ package mk.finki.ukim.mk.lab_b.service.application.impl;
 
 import mk.finki.ukim.mk.lab_b.dto.create.CreateAccommodationDto;
 import mk.finki.ukim.mk.lab_b.dto.display.DisplayAccommodationDto;
+import mk.finki.ukim.mk.lab_b.model.domain.Host;
 import mk.finki.ukim.mk.lab_b.model.views.AccommodationsPerHostView;
 import mk.finki.ukim.mk.lab_b.repository.AccommodationsPerHostViewRepository;
 import mk.finki.ukim.mk.lab_b.service.application.AccommodationApplicationService;
 import mk.finki.ukim.mk.lab_b.service.domain.AccommodationService;
+import mk.finki.ukim.mk.lab_b.service.domain.HostService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +18,12 @@ public class AccommodationApplicationServiceImpl implements AccommodationApplica
 
     AccommodationService accommodationService;
     AccommodationsPerHostViewRepository accommodationsPerHostViewRepository;
+    HostService hostService;
 
-    public AccommodationApplicationServiceImpl(AccommodationService accommodationService, AccommodationsPerHostViewRepository accommodationsPerHostViewRepository) {
+    public AccommodationApplicationServiceImpl(AccommodationService accommodationService, AccommodationsPerHostViewRepository accommodationsPerHostViewRepository, HostService hostService) {
         this.accommodationService = accommodationService;
         this.accommodationsPerHostViewRepository = accommodationsPerHostViewRepository;
+        this.hostService = hostService;
     }
 
     @Override
@@ -34,7 +38,14 @@ public class AccommodationApplicationServiceImpl implements AccommodationApplica
 
     @Override
     public Optional<DisplayAccommodationDto> save(CreateAccommodationDto createAccommodationDto) {
-        return accommodationService.save(createAccommodationDto.toAccommodation()).map(DisplayAccommodationDto::from);
+        Optional<Host> host = hostService.findById(createAccommodationDto.hostId());
+
+        if (host.isPresent()) {
+            return accommodationService.save(createAccommodationDto.toAccommodation(host.get()))
+                    .map(DisplayAccommodationDto::from);
+        }
+        return Optional.empty();
+
     }
 
     @Override
@@ -44,7 +55,15 @@ public class AccommodationApplicationServiceImpl implements AccommodationApplica
 
     @Override
     public Optional<DisplayAccommodationDto> update(Long id, CreateAccommodationDto createAccommodationDto) {
-        return accommodationService.save(createAccommodationDto.toAccommodation()).map(DisplayAccommodationDto::from);
+        Optional<Host> host = hostService.findById(createAccommodationDto.hostId());
+
+        return accommodationService.update(id,
+                        createAccommodationDto.toAccommodation(
+                                host.orElse(null)
+                        )
+                )
+                .map(DisplayAccommodationDto::from);
+
     }
 
     @Override

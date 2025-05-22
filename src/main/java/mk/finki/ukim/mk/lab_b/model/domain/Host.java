@@ -13,8 +13,7 @@ public class Host {
     private Long id;
     private String name;
     private String surname;
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne
     private Country country;
 
     public Host(String name, String surname, Country country) {

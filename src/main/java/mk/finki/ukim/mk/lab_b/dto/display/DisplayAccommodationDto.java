@@ -9,11 +9,13 @@ import java.util.stream.Collectors;
 public record DisplayAccommodationDto(Long id,String name, Category category, Long host, int numRooms, boolean active) {
 
     public static DisplayAccommodationDto from(Accommodation accommodation) {
+        Long hostId = accommodation.getHost() != null ? accommodation.getHost().getId() : null;
+
         return new DisplayAccommodationDto(
                 accommodation.getId(),
                 accommodation.getName(),
                 accommodation.getCategory(),
-                accommodation.getHost().getId(),
+                hostId,
                 accommodation.getNumRooms(),
                 accommodation.isActive()
         );
